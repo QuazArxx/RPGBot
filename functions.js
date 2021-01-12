@@ -40,6 +40,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
         .setColor(rpgbot)
         .setTitle(`A level ${monster.data[0].level} ${monster.data[0].name} appeared!`)
+        .addField(`Type r!join to join the fight!`)
 
         setTimeout(function() {
             if (!(this.party.some(t => t.type == 'player'))) {
