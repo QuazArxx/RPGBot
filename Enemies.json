@@ -1,6 +1,17 @@
 [
   {
     "name": "Thief",
-    "health": "20"
+    "level": 1,
+    "hp": 20,
+    "atk": 10,
+    "def": 0
+  },
+
+  {
+    "name": "Goblin",
+    "level": 1,
+    "hp": 15,
+    "atk": 5,
+    "def": 0
   }
 ]

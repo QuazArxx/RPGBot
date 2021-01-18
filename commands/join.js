@@ -9,7 +9,7 @@ module.exports = {
 	description: 'Used to join the grouping of players to fight an enemy that spawns',
 	execute(message, args) {
 
-		if (party.party.length == 0) return message.channel.send('There\'s no enemy to fight!');
+		if (party.enemy.length == 0) return message.channel.send('There\'s no enemy to fight!');
 		if (party.party.some(user => user.id === message.author.id)) return message.channel.send('You already joined the current fight!');
 
 		// TODO check if player is in the player list array in functions.js

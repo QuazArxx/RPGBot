@@ -3,30 +3,49 @@ const fs = require('fs');
 const axios = require('axios');
 
 const { rpgbot } = require('./colors.json');
+const enemies = require('./Enemies.json');
+const players = require('./players.json');
 
 module.exports = {
-    players: [],
+    //players: [],
     party: [],
+    enemy: [],
+    chest: [],
     randomLevel: Math.floor(Math.random() * 4 + 1),
+    enemySpawnChance: Math.floor(Math.random() * 100), // Percent chance
+    chestSpawnChance: Math.floor(Math.random() * 100), // Percent chance
 
-    requestAPI: async function () {
+    testEnemySpawn: function (message) {
+        const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+        if (!(this.enemy.length == 0)) return;
+
+        this.enemy.push({
+            name: randomEnemy.name,
+            level: randomEnemy.level,
+            hp: randomEnemy.hp
+        })
+
+        const enemySpawn = new Discord.MessageEmbed()
+        .setColor(rpgbot)
+        .setTitle(`A level ${randomEnemy.level} ${randomEnemy.name} appeared!`)
+    },
+
+    generateEnemy: async function () {
         try {
-            return await axios.get('https://freydoapps.com/api/testAPI/');
+            return await axios({
+                method: 'post',
+                url: 'https://freydoapps.com/api/rpgBot/insertMonster.php',
+                data: {
+                    
+                }
+            })
         } catch (error) {
             console.error(error);
         }
     },
 
-    generateMonster: async function () {
-        try {
-            return await axios.get(`https://freydoapps.com/api/rpgBot/generateMonster.php?level=${this.randomLevel}`);
-        } catch (error) {
-            console.error(error);
-        }
-    },
-
-    getEnemy: async function (message) {
-        let monster = await this.generateMonster();
+    /*getEnemy: async function (message) {
+        let enemy = await this.generateEnemy();
 
         if (this.party.some(type => type.type == 'monster')) return;
 
@@ -49,8 +68,19 @@ module.exports = {
             } else {
                 message.channel.send('Let the fight begin!');
             }
-        }.bind(this), 10000); 
+        }.bind(this), 10000);
 
         message.channel.send(embed);
+        
+    },*/
+
+    spawnChest: function(message) {
+        if (this.chestSpawnChance < 5 && this.chestSpawnChance > 0) {
+            const chest = new Discord.MessageEmbed()
+            .setColor(rpgbot)
+            .setTitle('A chest spawned! Type "r!unlock" to open it first! (Must have a key first)')
+
+            message.channel.send(chest)
+        }
     }
 };
