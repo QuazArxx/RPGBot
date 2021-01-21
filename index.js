@@ -33,7 +33,7 @@ client.on('message', async message => {
 	// Checks if bot says a message or if not in the server
 	if (message.author.bot || !message.guild) return;
 
-	if (!(message.startsWith(prefix))) {
+	if (message.content.toLowerCase() == 'spawn') {
 		functions.testEnemySpawn(message);
 	}
 
