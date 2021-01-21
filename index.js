@@ -33,8 +33,10 @@ client.on('message', async message => {
 	// Checks if bot says a message or if not in the server
 	if (message.author.bot || !message.guild) return;
 
-	functions.testEnemySpawn(message);
-	
+	if (!(message.startsWith(prefix))) {
+		functions.testEnemySpawn(message);
+	}
+
 	// The bot will not respond if there is no prefix,
 	// the user that typed it was a bot,
 	// or if it was not sent from in the server

@@ -1,18 +1,26 @@
-const Discord = require('discord.js');
+const fs = require('fs');
 
-const players = require('../functions.js');
-const { rpgbot } = require('../colors.json');
+const players = require('../players.json');
 
 module.exports = {
     name: 'start',
     description: 'Used by new players to start their quest',
     execute(message, args) {
-        if (players.some(id => id.id == message.author.id)) return message.channel.send('You\'ve already begun your adventure!');
-        const embed = new Discord.MessageEmbed()
-        .setColor(rpgbot)
-        .setTitle('Welcome to the start of a new adventure!')
+        if (players.some(user => user.id === message.author.id)) return message.channel.send('You\'ve already joined the adventure!')
+        players.push({
+            name: message.author.username,
+            id: message.author.id,
+            hp: 100,
+            atk: 5,
+            def: 1,
+            level: 1,
+            exp: 0
+        });
 
-        message.channel.send(embed);
+        fs.writeFile('./players.json', JSON.stringify(players), err => {
+            if (err) console.error(err);
+        });
 
+        message.channel.send(`${message.author.username} joined the RPG adventure!`);
     }
 }

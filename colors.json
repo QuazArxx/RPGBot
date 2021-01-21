@@ -1,5 +1,6 @@
 {
   "rpgbot": "#00b564",
+  "error": "#ff0000",
   "common": "#a8a8a8",
   "uncommon": "#52ff52",
   "rare": "#8585ff",

@@ -5,6 +5,7 @@ const axios = require('axios');
 const { rpgbot } = require('./colors.json');
 const enemies = require('./Enemies.json');
 const players = require('./players.json');
+const messages = require('./messages.js');
 
 module.exports = {
     //players: [],
@@ -19,15 +20,15 @@ module.exports = {
         const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
         if (!(this.enemy.length == 0)) return;
 
-        this.enemy.push({
-            name: randomEnemy.name,
-            level: randomEnemy.level,
-            hp: randomEnemy.hp
-        })
+        this.enemy.push(randomEnemy);
 
+        this.enemy.level = this.randomLevel;
+        
         const enemySpawn = new Discord.MessageEmbed()
         .setColor(rpgbot)
         .setTitle(`A level ${randomEnemy.level} ${randomEnemy.name} appeared!`)
+
+        message.channel.send(enemySpawn);
     },
 
     generateEnemy: async function () {
@@ -76,11 +77,7 @@ module.exports = {
 
     spawnChest: function(message) {
         if (this.chestSpawnChance < 5 && this.chestSpawnChance > 0) {
-            const chest = new Discord.MessageEmbed()
-            .setColor(rpgbot)
-            .setTitle('A chest spawned! Type "r!unlock" to open it first! (Must have a key first)')
-
-            message.channel.send(chest)
+            message.channel.send(messages.chestSpawn);
         }
     }
 };
