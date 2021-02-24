@@ -1,4 +1,7 @@
 [
 	"Health Potion",
-	"Mana Potion"
+	"Mana Potion", 
+	"Strength Potion",
+	"Defense Potion",
+	"Speed Potion"
 ]
