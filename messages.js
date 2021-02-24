@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 
 const colors = require('./colors.json');
-const { enemy } = require('./functions.js');
 
 module.exports = {
     startAdventure: new Discord.MessageEmbed()
@@ -12,7 +11,7 @@ module.exports = {
     
     chestSpawn: new Discord.MessageEmbed()
     .setColor(colors.rpgbot)
-    .setTitle('A chest spawned! Type "r!unlock" to open it first! (Must have a key first)')
+    .setTitle('A chest spawned! Type "r!open" to open it!')
     
     ,
     
