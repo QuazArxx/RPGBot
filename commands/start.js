@@ -14,7 +14,8 @@ module.exports = {
             atk: 5,
             def: 1,
             level: 1,
-            exp: 0
+            exp: 0,
+            inv: []
         });
 
         fs.writeFile('./players.json', JSON.stringify(players), err => {
