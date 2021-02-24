@@ -34,7 +34,7 @@ client.on('message', async message => {
 	if (message.author.bot || !message.guild) return;
 
 	if (message.content.toLowerCase() == 'spawn') {
-		functions.testEnemySpawn(message);
+		functions.spawnChest(message);
 	}
 
 	// The bot will not respond if there is no prefix,
