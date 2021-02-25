@@ -6,5 +6,6 @@
   "rare": "#8585ff",
   "epic": "#7700ff",
   "legendary": "#ffc800",
-  "set": "#00ffff"
+  "set": "#00ffff",
+  "chest": "#ffff00"
 }
