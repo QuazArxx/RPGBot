@@ -10,7 +10,7 @@ module.exports = {
     ,
     
     chestSpawn: new Discord.MessageEmbed()
-    .setColor(colors.rpgbot)
+    .setColor(colors.chest)
     .setTitle('A chest spawned! Type "r!open" to open it!')
     
     ,
