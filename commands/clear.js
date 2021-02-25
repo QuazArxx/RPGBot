@@ -1,11 +1,16 @@
-const { party, enemy } = require('../functions.js');
+const fs = require('fs');
+const players = require('../players.json');
 
 module.exports = {
     name: 'clear',
-    description: 'Clears the party',
+    description: 'Clears the inv',
     execute(message, args) {
-        party.length = 0;
-        enemy.length = 0;
-        message.channel.send('Party and enemy cleared.')
+        players[0].inv.length = 0;
+
+        fs.writeFile('./players.json', JSON.stringify(players), err => {
+            if (err) console.error(err);
+        });
+
+        message.channel.send('Inv cleared.');
     }
 }
