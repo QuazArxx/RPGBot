@@ -18,18 +18,20 @@ module.exports = {
     chestSpawnChance: Math.floor(Math.random() * 100), // Percent chance
 
     testEnemySpawn: function (message) {
-        const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
-        if (!(this.enemy.length == 0)) return;
+        if (this.enemySpawnChance > 0 && this.enemySpawnChance <= 5) {
+            const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+            if (!(this.enemy.length == 0)) return;
 
-        this.enemy.push(randomEnemy);
+            this.enemy.push(randomEnemy);
 
-        this.enemy.level = this.randomLevel;
-        
-        const enemySpawn = new Discord.MessageEmbed()
-        .setColor(rpgbot)
-        .setTitle(`A level ${randomEnemy.level} ${randomEnemy.name} appeared!`)
+            this.enemy.level = this.randomLevel;
+            
+            const enemySpawn = new Discord.MessageEmbed()
+            .setColor(rpgbot)
+            .setTitle(`A level ${randomEnemy.level} ${randomEnemy.name} appeared!`)
 
-        message.channel.send(enemySpawn);
+            message.channel.send(enemySpawn);
+        }
     },
 
     generateEnemy: async function () {
@@ -77,13 +79,10 @@ module.exports = {
     },*/
 
     spawnChest: function(message) {
-        // if (this.chestSpawnChance < 5 && this.chestSpawnChance > 0) {
-        //     this.fillChest();
-        //     message.channel.send(messages.chestSpawn);
-        // }
-
-        this.fillChest();
-        message.channel.send(messages.chestSpawn);
+        if (this.chestSpawnChance < 5 && this.chestSpawnChance > 0) {
+            this.fillChest();
+            message.channel.send(messages.chestSpawn);
+        }
     },
 
     fillChest: function() {
