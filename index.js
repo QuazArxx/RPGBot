@@ -14,12 +14,13 @@ client.commands = new Discord.Collection();
 
 const folders = fs.readdirSync('./commands'); // read the directory of folders
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-
-	client.commands.set(command.name, command);
+// Sets how to find the subfolders with commands
+for (var folder of folders) {
+    const files = fs.readdirSync(`./commands/${folder}`); // for each folder, read the files in the folder
+    for (var file of files) {
+        const command = require(`./commands/${folder}/${file}`); // for each file, set the command
+        client.commands.set(command.name, command);
+    }
 }
 
 // When client turns on it logs that it's on
@@ -33,9 +34,8 @@ client.on('message', async message => {
 	// Checks if bot says a message or if not in the server
 	if (message.author.bot || !message.guild) return;
 
-	if (message.content.toLowerCase() == 'spawn') {
-		functions.spawnChest(message);
-	}
+	functions.testEnemySpawn(message);
+	functions.spawnChest(message);
 
 	// The bot will not respond if there is no prefix,
 	// the user that typed it was a bot,
