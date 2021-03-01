@@ -4,7 +4,6 @@ const axios = require('axios');
 const { prefix, token } = require('./config.json');
 
 const functions = require('./functions.js');
-const spawn = require('./functions.js');
 
 let used = false;
 
@@ -34,8 +33,15 @@ client.on('message', async message => {
 	// Checks if bot says a message or if not in the server
 	if (message.author.bot || !message.guild) return;
 
-	functions.testEnemySpawn(message);
-	functions.spawnChest(message);
+	if (message.author.id == '387959359394807808' && message.content == 'enemy') functions.testEnemySpawn(message);
+	if (message.author.id == '387959359394807808' && message.content == 'chest') functions.spawnChest(message);
+
+	if (functions.enemySpawnChance > 0 && functions.enemySpawnChance <= 5) {
+		functions.testEnemySpawn(message);
+	}	
+	if (functions.chestSpawnChance > 0 && functions.chestSpawnChance <= 5) {
+		functions.spawnChest(message);
+	}
 
 	// The bot will not respond if there is no prefix,
 	// the user that typed it was a bot,
