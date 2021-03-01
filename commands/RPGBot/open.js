@@ -9,6 +9,7 @@ const colors = require('../../colors.json');
 module.exports = {
     name: 'open',
     description: 'Used to open a chest that spawned',
+    aliases: 'o',
     execute(message, args) {
         if (!(players.some(user => user.id === message.author.id))) return message.channel.send(messages.startAdventure);
         if (functions.chest.length == 0) return message.channel.send('A chest hasn\'t spawned yet!');
