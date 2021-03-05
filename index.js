@@ -33,8 +33,8 @@ client.on('message', async message => {
 	// Checks if bot says a message or if not in the server
 	if (message.author.bot || !message.guild) return;
 
-	if (message.author.id == '387959359394807808' && message.content == 'enemy') functions.testEnemySpawn(message);
-	if (message.author.id == '387959359394807808' && message.content == 'chest') functions.spawnChest(message);
+	if (message.author.id == '387959359394807808' && message.content.toLowerCase() == 'enemy') functions.testEnemySpawn(message);
+	if (message.author.id == '387959359394807808' && message.content.toLowerCase() == 'chest') functions.spawnChest(message);
 
 	if (functions.enemySpawnChance > 0 && functions.enemySpawnChance <= 5) {
 		functions.testEnemySpawn(message);
