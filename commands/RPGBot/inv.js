@@ -10,12 +10,20 @@ module.exports = {
     aliases: 'i',
     execute(message, args) {
         if (!(players.some(user => user.id === message.author.id))) return message.channel.send(messages.startAdventure);
-        
+    
         var userInv;
         for (let x = 0; x < players.length; x++) {
             if (players[x].id == message.author.id) {
                 userInv = players[x];
             }
+        }
+
+        if (userInv.inv.length == 0) {
+            const embed = new Discord.MessageEmbed()
+            .setColor(colors.error)
+            .setTitle(`${message.author.username}'s inventory is empty!`)
+
+            return message.channel.send(embed);
         }
 
         let invMessage = '';
