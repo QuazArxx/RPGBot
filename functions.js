@@ -5,6 +5,7 @@ const axios = require('axios');
 const { rpgbot } = require('./colors.json');
 const enemies = require('./Enemies.json');
 const players = require('./players.json');
+const items = require('./items.json');
 const messages = require('./messages.js');
 
 module.exports = {
@@ -76,8 +77,40 @@ module.exports = {
     },*/
 
     spawnChest: function(message) {
-        if (this.chestSpawnChance < 5 && this.chestSpawnChance > 0) {
-            message.channel.send(messages.chestSpawn);
+        if (!(this.chest.length == 0)) {
+            this.chest.length = 0;
+        }
+        
+        this.fillChest();
+        message.channel.send(messages.chestSpawn);
+
+        setTimeout(function() {
+            if (!(this.chest.length == 0)) {
+                message.channel.send(messages.chestDisappeared);
+                this.chest.length = 0;
+            }
+        }.bind(this), 30000);
+    },
+
+    fillChest: function() {
+        this.chest.length = 0;
+        let chestItemCount = Math.floor(Math.random() * 4 + 1);
+
+        let randomAmount;
+        let randomItem;
+        for (let x = 0; x < chestItemCount; x++) {
+            // Keeps getting a random item until it's not in the chest yet
+            do {
+                randomItem = items[Math.floor(Math.random() * items.length)];
+            } while(this.chest.some(i => i.item == randomItem))
+            
+            randomAmount = Math.floor(Math.random() * 4 + 1);
+
+            // Adds the item a random number of times into the chest
+            this.chest.push({
+                item: randomItem,
+                amount: randomAmount
+            });
         }
     }
 };

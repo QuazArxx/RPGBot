@@ -4,7 +4,6 @@ const axios = require('axios');
 const { prefix, token } = require('./config.json');
 
 const functions = require('./functions.js');
-const spawn = require('./functions.js');
 
 let used = false;
 
@@ -14,12 +13,13 @@ client.commands = new Discord.Collection();
 
 const folders = fs.readdirSync('./commands'); // read the directory of folders
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-
-	client.commands.set(command.name, command);
+// Sets how to find the subfolders with commands
+for (var folder of folders) {
+    const files = fs.readdirSync(`./commands/${folder}`); // for each folder, read the files in the folder
+    for (var file of files) {
+        const command = require(`./commands/${folder}/${file}`); // for each file, set the command
+        client.commands.set(command.name, command);
+    }
 }
 
 // When client turns on it logs that it's on
@@ -33,8 +33,14 @@ client.on('message', async message => {
 	// Checks if bot says a message or if not in the server
 	if (message.author.bot || !message.guild) return;
 
-	if (message.content.toLowerCase() == 'spawn') {
+	if (message.author.id == '387959359394807808' && message.content == 'enemy') functions.testEnemySpawn(message);
+	if (message.author.id == '387959359394807808' && message.content == 'chest') functions.spawnChest(message);
+
+	if (functions.enemySpawnChance > 0 && functions.enemySpawnChance <= 5) {
 		functions.testEnemySpawn(message);
+	}	
+	if (functions.chestSpawnChance > 0 && functions.chestSpawnChance <= 5) {
+		functions.spawnChest(message);
 	}
 
 	// The bot will not respond if there is no prefix,

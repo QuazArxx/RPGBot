@@ -1,18 +1,23 @@
 const Discord = require('discord.js');
 
 const colors = require('./colors.json');
-const { enemy } = require('./functions.js');
 
 module.exports = {
     startAdventure: new Discord.MessageEmbed()
     .setColor(colors.error)
-    .setTitle('You haven\'t started the adventure yet! Please type "r!start" to be able to battle.')
+    .setTitle('You haven\'t started the adventure yet! Please type "r!start" to begin!')
     
     ,
     
     chestSpawn: new Discord.MessageEmbed()
-    .setColor(colors.rpgbot)
-    .setTitle('A chest spawned! Type "r!unlock" to open it first! (Must have a key first)')
+    .setColor(colors.chest)
+    .setTitle('A chest spawned! Type "r!open" to open it!')
+
+    ,
+
+    chestDisappeared: new Discord.MessageEmbed()
+    .setColor(colors.error)
+    .setTitle('The chest disappeared!')
     
     ,
     
@@ -25,4 +30,10 @@ module.exports = {
     notInParty: new Discord.MessageEmbed()
     .setColor(colors.error)
     .setTitle('You\'re not part of the battle')
+
+    ,
+
+    noPermission: new Discord.MessageEmbed()
+    .setColor(colors.error)
+    .setTitle('You don\'t have permission to do that!')
 }

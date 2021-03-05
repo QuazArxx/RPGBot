@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-const { party, enemy } = require('../functions.js');
-const players = require('../players.json');
-const messages = require('../messages.js');
+const { party, enemy } = require('../../functions.js');
+const players = require('../../players.json');
+const messages = require('../../messages.js');
 
 module.exports = {
     name: 'attack',
