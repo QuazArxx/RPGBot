@@ -3,3 +3,5 @@ Make enemy fight back
 
 Give party members a party role and open a fight channel when battle starts
     Party members can only fight in the specified channel
+
+Set up the shop
