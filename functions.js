@@ -34,29 +34,23 @@ module.exports = {
 
     generateEnemy: async function () {
         try {
-            return await axios({
-                method: 'post',
-                url: 'https://freydoapps.com/api/rpgBot/insertMonster.php',
-                data: {
-                    
-                }
-            })
-        } catch (error) {
-            console.error(error);
+            return await axios.get('http://dev.freydo-apis.tech/rpgbot/monster/get')
+        }catch (error) {
+            console.error(error)
         }
     },
 
-    /*getEnemy: async function (message) {
+    getEnemy: async function (message) {
         let enemy = await this.generateEnemy();
 
-        if (this.party.some(type => type.type == 'monster')) return;
+        /*if (this.enemy.some(type => type.type == 'monster')) return;
 
         this.party.push({
-            name: monster.data[0].name,
-            level: monster.data[0].level,
+            name: monster.data.name,
+            level: monster.data.level,
             type: 'monster',
-            hp: monster.data[0].HP
-        });
+            hp: monster.data.HP
+        });*/
 
         const embed = new Discord.MessageEmbed()
         .setColor(rpgbot)
@@ -74,7 +68,7 @@ module.exports = {
 
         message.channel.send(embed);
         
-    },*/
+    },
 
     spawnChest: function(message) {
         if (!(this.chest.length == 0)) {
