@@ -5,3 +5,8 @@ Give party members a party role and open a fight channel when battle starts
     Party members can only fight in the specified channel
 
 Set up the shop
+
+Finish attack command
+    Change damage to be a range depending on player attack
+
+Stop players from attacking before fight starts
