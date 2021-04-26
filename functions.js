@@ -17,7 +17,7 @@ module.exports = {
     enemySpawnChance: Math.floor(Math.random() * 100), // Percent chance
     chestSpawnChance: Math.floor(Math.random() * 100), // Percent chance
 
-    testEnemySpawn: function (message) {
+    /*testEnemySpawn: function (message) {
         const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
         if (!(this.enemy.length == 0)) return;
 
@@ -30,36 +30,38 @@ module.exports = {
         .setTitle(`A level ${randomEnemy.level} ${randomEnemy.name} appeared!`)
 
         message.channel.send(enemySpawn);
-    },
+    },*/
 
     generateEnemy: async function () {
         try {
-            return await axios.get('http://dev.freydo-apis.tech/rpgbot/monster/get')
+            return await axios.get(`http://dev.freydo-apis.tech/rpgbot/monster/get?level=${this.randomLevel}`)
         }catch (error) {
             console.error(error)
         }
     },
 
     getEnemy: async function (message) {
-        let enemy = await this.generateEnemy();
+        let monster = await this.generateEnemy();
 
-        /*if (this.enemy.some(type => type.type == 'monster')) return;
+        if (!(this.enemy.length == 0)) return;
 
-        this.party.push({
+        this.enemy.push({
             name: monster.data.name,
             level: monster.data.level,
             type: 'monster',
-            hp: monster.data.HP
-        });*/
+            hp: monster.data.HP,
+            def: monster.data.DEF,
+            xp: monster.data.XP
+        });
 
         const embed = new Discord.MessageEmbed()
         .setColor(rpgbot)
-        .setTitle(`A level ${monster.data[0].level} ${monster.data[0].name} appeared!`)
-        .addField(`Type r!join to join the fight!`)
+        .setTitle(`A level ${monster.data.level} ${monster.data.name} appeared!`)
+        .addField(`Type r!join to join the fight!`, '\u200B')
 
         setTimeout(function() {
             if (!(this.party.some(t => t.type == 'player'))) {
-                message.channel.send(`${monster.data[0].name} got away!`)
+                message.channel.send(`${monster.data.name} got away!`)
                 this.party.length = 0;
             } else {
                 message.channel.send('Let the fight begin!');
