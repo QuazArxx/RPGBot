@@ -1,25 +1,17 @@
-const axios = require('axios');
-
-const getMonsters = async () => {
-    try {
-        return await axios.get('http://dev.freydo-apis.tech/rpgbot/monster/get-all')
-    }catch (error) {
-        console.error(error)
-    }
-}
+const axios = require('axios')
 
 module.exports = {
+    func: async function () {
+        try {
+            await axios.get('https://dev.freydo-apis.tech/rpgbot/user/get-all/index.php')
+        } catch (err) {
+            console.error(err)
+        }
+    },
     name: 'test',
     async execute(message, args) {
-        // dev.freydo-apis.tech/rpgbot/monster/get-all
-        const Message = async () => {
-            const monsters = await getMonsters()
-
-            //console.log(monsters)
-            message.channel.send(require('util').inspect(monsters.data));
-            //message.channel.send(monsters.data);
-        }
+        let player = await this.func()
         
-        Message()
+        message.channel.send(player)
     }
 }
