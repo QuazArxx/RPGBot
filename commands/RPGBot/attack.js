@@ -46,12 +46,14 @@ module.exports = {
 
         message.channel.send(`${message.author.username} dealt ${damage} damage to the ${enemy[0].name}!`);
 
+
+        // Adds exp to every player in the party if the monster is defeated
         if (enemy[0].hp <= 0) {
-            message.channel.send(`${enemy[0].name} defeated! You gained ${enemy[0].exp} experience!`);
+            message.channel.send(`${enemy[0].name} defeated! You gained ${enemy[0].xp} experience!`);
             for (x = 0; x < party.length; x++) {
                 for (y = 0; y < players.length; y++) {
                     if (party[x].id == players[y].id) {
-                        players[y].exp += enemy[0].exp;
+                        players[y].exp += enemy[0].xp;
                     }
                 }
             }
