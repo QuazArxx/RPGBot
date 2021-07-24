@@ -12,6 +12,6 @@ module.exports = {
     async execute(message, args) {
         let player = await this.func()
         
-        message.channel.send(player)
+        console.log(player)
     }
 }
