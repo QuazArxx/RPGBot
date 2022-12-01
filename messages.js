@@ -1,39 +1,39 @@
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 const colors = require('./colors.json');
 
 module.exports = {
-    startAdventure: new Discord.MessageEmbed()
+    startAdventure: new EmbedBuilder()
     .setColor(colors.error)
     .setTitle('You haven\'t started the adventure yet! Please type "r!start" to begin!')
     
     ,
     
-    chestSpawn: new Discord.MessageEmbed()
+    chestSpawn: new EmbedBuilder()
     .setColor(colors.chest)
     .setTitle('A chest spawned! Type "r!open" to open it!')
 
     ,
 
-    chestDisappeared: new Discord.MessageEmbed()
+    chestDisappeared: new EmbedBuilder()
     .setColor(colors.error)
     .setTitle('The chest disappeared!')
     
     ,
     
-    enemyDef: new Discord.MessageEmbed()
+    enemyDef: new EmbedBuilder()
     .setColor(colors.error)
     .setTitle('The enemy\'s defense is too high! Your attacks don\'t do any damage!')
 
     ,
 
-    notInParty: new Discord.MessageEmbed()
+    notInParty: new EmbedBuilder()
     .setColor(colors.error)
     .setTitle('You\'re not part of the battle')
 
     ,
 
-    noPermission: new Discord.MessageEmbed()
+    noPermission: new EmbedBuilder()
     .setColor(colors.error)
     .setTitle('You don\'t have permission to do that!')
 }
