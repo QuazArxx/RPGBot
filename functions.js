@@ -9,10 +9,36 @@ const chest = require('./chest.json')
 
 const messages = require('./messages.js')
 
+let chestArray = []
+
+function fillChest() {
+    chestArray.length = 0
+
+    let chestItemCount = Math.floor(Math.random() * 4 + 1)
+
+    let randomAmount
+    let randomItem
+    for (let x = 0; x < chestItemCount; x++) {
+        // Keeps getting a random item until it's not in the chest yet
+        do {
+            randomItem = items[Math.floor(Math.random() * items.length)]
+        } while(chestArray.some(i => i.item == randomItem))
+        
+        randomAmount = Math.floor(Math.random() * 4 + 1)
+
+        // Adds the item a random number of times into the chest
+        chestArray.push({
+            item: randomItem,
+            amount: randomAmount
+        })
+    }
+}
+
 module.exports = {
     //players: [],
     party: [],
     enemy: [],
+    chest: chestArray,
     randomLevel: Math.floor(Math.random() * 4 + 1),
     enemySpawnChance: Math.floor(Math.random() * 100), // Percent chance
     chestSpawnChance: Math.floor(Math.random() * 100), // Percent chance
@@ -65,42 +91,13 @@ module.exports = {
         
     },*/
 
-    fillChest: function () {
-        chest.length = 0
-
-        let chestItemCount = Math.floor(Math.random() * 4 + 1)
-
-        let randomAmount
-        let randomItem
-        for (let x = 0; x < chestItemCount; x++) {
-            // Keeps getting a random item until it's not in the chest yet
-            do {
-                randomItem = items[Math.floor(Math.random() * items.length)]
-            } while(chest.some(i => i.item == randomItem))
-            
-            randomAmount = Math.floor(Math.random() * 4 + 1)
-
-            // Adds the item a random number of times into the chest
-            chest.push({
-                item: randomItem,
-                amount: randomAmount
-            })
-            return chest
+    spawnChest: async function (interaction) {
+        try {
+            fillChest()
+        } catch (error) {
+            console.log(error)
         }
 
-        fs.writeFile('./chest.json', JSON.stringify(chest), err => {
-            if (err) console.error(err)
-        })
-
-        return console.log(chest.length)
-    },
-
-    showChest: function (interaction) {
-        interaction.reply({ content: `${chestArray.length}` })
-    },
-
-    spawnChest: async function (interaction) {
-        this.fillChest
         await interaction.reply({ embeds: [messages.chestSpawn] })
     }
 }

@@ -8,6 +8,6 @@ module.exports = {
         .setDescription('Shows the chest contents')
         .setDefaultMemberPermissions(0),
     async execute(interaction, client) {
-        functions.showChest(interaction)
+        interaction.reply({ content: `${JSON.stringify(functions.chest, null, 4)}` })
     }
 }

@@ -11,7 +11,7 @@ module.exports = {
         .setName('open')
         .setDescription('Used to open a chest that spawned'),
     async execute(interaction, client) {
-        if (!(players.some(user => user.id === interaction.user.id))) return interaction.reply({ content: `${messages.startAdventure}`, ephemeral: true })
+        if (!(players.some(user => user.id === interaction.user.id))) return interaction.reply({ embeds: [messages.startAdventure], ephemeral: true })
         if (functions.chest.length == 0) return interaction.reply({ content: 'A chest hasn\'t spawned yet!', ephemeral: true })
 
         // Get's the players information
@@ -63,9 +63,7 @@ module.exports = {
         .setColor(colors.rpgbot)
         .setTitle(`${interaction.user.username} opened the chest!`)
         .addFields(
-            { name: 'You found:', value: '\u200B' },
-            { name: '\u200B', value: '\u200B' },
-            { name: '\u200B', value: `${chestMessage}` }
+            { name: 'You found:', value: `${chestMessage}` }
         )
 
         functions.chest.length = 0
