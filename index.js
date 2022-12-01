@@ -1,74 +1,70 @@
-const fs = require('fs');
-const Discord = require('discord.js');
-const axios = require('axios');
-const { prefix, token } = require('./config.json');
+const { Client, Collection, IntentsBitField, EmbedBuilder } = require('discord.js')
+const { token } = require('./config.json')
 
-const functions = require('./functions.js');
+const fs = require('node:fs')
+const path = require('node:path')
 
-let used = false;
+const functions = require('./functions.js')
+
+let used = false
+
+// Sets Discord IntentsBitField
+const discordIntents = new IntentsBitField()
+discordIntents.add(
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMembers,
+    IntentsBitField.Flags.GuildPresences,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.GuildMessageReactions,
+    IntentsBitField.Flags.DirectMessages,
+    IntentsBitField.Flags.GuildIntegrations,
+    IntentsBitField.Flags.MessageContent
+)
 
 // Declares the client and the commands for the handler
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+const client = new Client({intents: discordIntents, partials: ["MESSAGE", "CHANNEL", "REACTION"]})
+client.commands = new Collection()
 
-const folders = fs.readdirSync('./commands'); // read the directory of folders
+const commandsPath = path.join(__dirname, 'commands')
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'))
 
-// Sets how to find the subfolders with commands
-for (var folder of folders) {
-    const files = fs.readdirSync(`./commands/${folder}`); // for each folder, read the files in the folder
-    for (var file of files) {
-        const command = require(`./commands/${folder}/${file}`); // for each file, set the command
-        client.commands.set(command.name, command);
-    }
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file)
+	const command = require(filePath)
+	// Set a new item in the Collection
+	// With the key as the command name and the value as the exported module
+	client.commands.set(command.data.name, command)
 }
 
 // When client turns on it logs that it's on
 client.once('ready', async () => {
-	console.log(`${client.user.username} is online!`);
-});
+	console.log(`${client.user.username} is online!`)
+})
 
 // This is the start of the main function when the bot is turned on
-client.on('message', async message => {
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isChatInputCommand) return
 
-	// Checks if bot says a message or if not in the server
-	if (message.author.bot || !message.guild) return;
+    const command = interaction.client.commands.get(interaction.commandName)
+    
+    if (!command) return;
 
-	if (message.author.id == '387959359394807808' && message.content.toLowerCase() == 'enemy') functions.getEnemy(message);
-	if (message.author.id == '387959359394807808' && message.content.toLowerCase() == 'chest') functions.spawnChest(message);
+    try {
+	    await command.execute(interaction, client);
+    }  
+    catch (error) {
+	    console.error(error);
+	    await interaction.reply({ content: 'Something went wrong! Don\'t worry though, Quaz has been notified.', ephemeral: true })
 
-	if (functions.enemySpawnChance > 0 && functions.enemySpawnChance <= 5) {
-		functions.getEnemy(message);
-	}	
-	if (functions.chestSpawnChance > 0 && functions.chestSpawnChance <= 5) {
-		functions.spawnChest(message);
-	}
-
-	// The bot will not respond if there is no prefix,
-	// the user that typed it was a bot,
-	// or if it was not sent from in the server
-	if (!message.content.startsWith(prefix) || message.author.bot || !message.guild) return;
-
-	// Creates the arguments variable and separates it with a space
-	// and creates the command variable
-	const args = message.content.slice(prefix.length).split(' ');
-	const commandName = args.shift().toLowerCase();
-
-	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
-	if (!command) return;
-	
-	if (command.guildOnly && message.channel.type !== 'text') {
-		return message.reply('I can\'t execute that command inside DMs!');
-	}
-
-	try {
-		command.execute(message, args);
-	}
-	catch (error) {
-		console.error(error);
-		message.channel.send('There was an error trying to execute that command!\nCheck the console for details.');
-	}
-});
+        const embed = new EmbedBuilder()
+        .setColor('Red')
+        .setTitle('Command Error')
+        .addFields(
+            {name: `${interaction.user.username} tried to use "${interaction}" but it failed.`, value: `${error}`}
+        )
+        await client.users.send('387959359394807808', { embeds: [embed] })
+    }
+})
 
 // This logs in the bot with the specified token found in config
-client.login(token);
+client.login(token)
